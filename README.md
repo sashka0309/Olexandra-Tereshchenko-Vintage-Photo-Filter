@@ -7,18 +7,19 @@
 
 ## 📌 Popis projektu
 
-Webová aplikácia umožňujúca aplikovanie vintage a retro fotografických filtrov na ľubovoľný obrázok priamo v prehliadači. Bez inštalácie, bez servera — všetko beží lokálne v HTML + JavaScript.
+Webová aplikácia na aplikovanie vintage a retro fotografických filtrov priamo v prehliadači. Žiadna inštalácia, žiadny server — všetko beží lokálne v čistom HTML + JavaScript.
 
 ---
 
 ## ✨ Funkcie
 
 - 📷 **Nahranie fotografie** — drag & drop alebo výber zo súborov
-- 🎨 **9 retro filtrov** — Sepia, Vintage, Polaroid, Noir, Faded, Warm, Kodak, Lomo, Original
-- 🎚️ **Nastavenie intenzity** — posuvník pre silu filtra
-- 🌾 **Grain efekt** — filmové zrno
-- 🔲 **Vignette efekt** — tmavé okraje fotografie
+- 🎨 **40 retro filtrov** — Sepia, Vintage, Polaroid, Noir, Faded, Warm, Kodak, Lomo, Cross Process, Faded Pink, Cyberpunk, Dreamy, Sunset, Matte, Infrared, Dusty, Teal & Orange, Moonlight, Summer, Chrome, Forest, Arctic, Golden Hour, Acid, Blueprint, Velvet, Ember, Aqua, Lavender, Toxic, Bronze, Ice, Desert, Neon, Coffee, Galaxy, Pop Art, Autumn, Bleach
+- 🎚️ **Intensity** — sila filtra
+- 🌾 **Grain** — filmové zrno
+- 🔲 **Vignette** — tmavé okraje fotografie
 - 💾 **Stiahnutie výsledku** — export ako JPG
+- 🖥️ **3-stĺpcový layout** — filtre vľavo, foto v strede, nastavenia vpravo
 
 ---
 
@@ -27,8 +28,8 @@ Webová aplikácia umožňujúca aplikovanie vintage a retro fotografických fil
 | Technológia | Použitie |
 |---|---|
 | HTML5 | Štruktúra stránky |
-| CSS3 | Dizajn a animácie |
-| JavaScript | Spracovanie obrazu cez Canvas API |
+| CSS3 | Dizajn, grid layout, animácie |
+| JavaScript | Logika aplikácie |
 | Canvas API | Pixel-level manipulácia s obrázkom |
 
 ---
