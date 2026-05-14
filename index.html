@@ -40,7 +40,7 @@
         .center-panel{display:flex;flex-direction:column;gap:10px;}
         .film-strip{display:flex;gap:4px;overflow:hidden;height:16px;}
         .film-hole{width:13px;height:10px;background:var(--brown);border-radius:2px;flex-shrink:0;}
-        .canvas-wrapper{background:var(--brown);border-radius:4px;overflow:hidden;min-height:400px;display:flex;align-items:center;justify-content:center;}
+        .canvas-wrapper{background:var(--brown);border-radius:4px;overflow:hidden;min-height:400px;display:flex;align-items:center;justify-content:center;position:relative;}
         .canvas-placeholder{text-align:center;color:rgba(245,239,230,0.4);padding:40px;}
         .canvas-placeholder .big-icon{font-size:2.5rem;margin-bottom:10px;display:block;}
         .canvas-placeholder p{font-family:'Playfair Display',serif;font-style:italic;}
@@ -59,6 +59,11 @@
         .btn-secondary{width:100%;padding:12px;background:transparent;color:var(--brown);border:1px solid var(--amber);border-radius:3px;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:0.2s;}
         .btn-secondary:hover{background:var(--amber);color:var(--cream);}
         .btn-secondary:disabled{opacity:0.4;cursor:not-allowed;}
+        .btn-compare{width:100%;padding:12px;background:transparent;color:var(--brown);border:1px solid var(--brown);border-radius:3px;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:0.2s;user-select:none;}
+        .btn-compare:hover{background:var(--tan);}
+        .btn-compare.comparing{background:var(--brown);color:var(--cream);}
+        .btn-compare:disabled{opacity:0.4;cursor:not-allowed;}
+        .comparing-badge{position:absolute;top:10px;right:10px;background:rgba(245,239,230,0.92);color:var(--brown);font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:4px 10px;border-radius:2px;border:1px solid var(--amber);pointer-events:none;display:none;z-index:10;}
         @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
         .fade-in{animation:fadeIn 0.4s ease forwards;}
     </style>
@@ -131,6 +136,7 @@
                 <span class="big-icon">🎞️</span>
                 <p>Your photo will appear here</p>
             </div>
+            <div class="comparing-badge" id="comparingBadge">ORIGINAL</div>
             <canvas id="photoCanvas" style="display:none;"></canvas>
         </div>
         <div class="film-strip" id="filmBottom"></div>
@@ -151,6 +157,7 @@
             <input type="range" id="vignetteSlider" min="0" max="100" value="50">
         </div>
         <div class="divider"></div>
+        <button class="btn-compare" id="compareBtn" disabled>Hold to Compare</button>
         <button class="btn-primary" id="applyBtn" disabled>Apply Filter</button>
         <button class="btn-secondary" id="downloadBtn" disabled>Save ↓</button>
     </div>
@@ -181,6 +188,7 @@
                 document.getElementById('placeholder').style.display='none';
                 document.getElementById('applyBtn').disabled=false;
                 document.getElementById('downloadBtn').disabled=false;
+                document.getElementById('compareBtn').disabled=false;
                 document.getElementById('infoTag').textContent=img.width+' × '+img.height+'px · '+file.name;
                 canvas.classList.add('fade-in');applyCurrentFilter();
             };img.src=e.target.result;
@@ -267,6 +275,35 @@
             default:return[r,g,b];
         }
     }
+
+    // Compare button
+    const compareBtn = document.getElementById('compareBtn');
+    const comparingBadge = document.getElementById('comparingBadge');
+
+    function showOriginal() {
+        if (!originalImageData) return;
+        ctx.putImageData(originalImageData, 0, 0);
+        comparingBadge.style.display = 'block';
+        compareBtn.classList.add('comparing');
+        compareBtn.textContent = 'Showing Original...';
+    }
+
+    function showFiltered() {
+        if (!originalImageData) return;
+        applyCurrentFilter();
+        comparingBadge.style.display = 'none';
+        compareBtn.classList.remove('comparing');
+        compareBtn.textContent = 'Hold to Compare';
+    }
+
+    // Mouse events
+    compareBtn.addEventListener('mousedown', () => showOriginal());
+    compareBtn.addEventListener('mouseup', () => showFiltered());
+    compareBtn.addEventListener('mouseleave', () => { if (compareBtn.classList.contains('comparing')) showFiltered(); });
+
+    // Touch events (mobile)
+    compareBtn.addEventListener('touchstart', (e) => { e.preventDefault(); showOriginal(); });
+    compareBtn.addEventListener('touchend', (e) => { e.preventDefault(); showFiltered(); });
     function lerp(a,b,t){return clamp(a+(b-a)*t);}
     function clamp(v){return Math.max(0,Math.min(255,Math.round(v)));}
 </script>
